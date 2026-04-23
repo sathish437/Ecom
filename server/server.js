@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const path = require('path');
 
 dotenv.config();
 
@@ -11,17 +12,37 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// =======================
+// ✅ API ROUTES
+// =======================
 app.use('/api/users', require('./routes/authRoutes'));
 app.use('/api/products', require('./routes/productRoutes'));
 app.use('/api/cart', require('./routes/cartRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 
-app.get('/', (req, res) => {
-    res.send('API is running...');
+// =======================
+// 🔥 SERVE FRONTEND
+// =======================
+
+// Serve React build
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// React routing (IMPORTANT)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
-// Error Handling Middleware
+// =======================
+// ❗ REMOVE THIS (IMPORTANT)
+// =======================
+// ❌ DELETE THIS:
+// app.get('/', (req, res) => {
+//     res.send('API is running...');
+// });
+
+// =======================
+// ERROR HANDLER
+// =======================
 app.use((err, req, res, next) => {
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     res.status(statusCode);
@@ -31,7 +52,9 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Database Connection & Server Start
+// =======================
+// START SERVER
+// =======================
 const startServer = async () => {
     await connectDB();
 
