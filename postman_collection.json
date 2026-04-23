@@ -1,0 +1,182 @@
+{
+	"info": {
+		"_postman_id": "ecommerce-app-collection",
+		"name": "E-Commerce App APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"John Doe\",\n    \"email\": \"john@example.com\",\n    \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}/api/users",
+							"host": ["{{URL}}"],
+							"path": ["api", "users"]
+						}
+					}
+				},
+				{
+					"name": "Login User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{ "key": "Content-Type", "value": "application/json" }
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"john@example.com\",\n    \"password\": \"123456\"\n}"
+						},
+						"url": {
+							"raw": "{{URL}}/api/users/login",
+							"host": ["{{URL}}"],
+							"path": ["api", "users", "login"]
+						}
+					}
+				},
+                {
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+						],
+						"url": {
+							"raw": "{{URL}}/api/users/profile",
+							"host": ["{{URL}}"],
+							"path": ["api", "users", "profile"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/products",
+							"host": ["{{URL}}"],
+							"path": ["api", "products"]
+						}
+					}
+				},
+				{
+					"name": "Get Product By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/api/products/:id",
+							"host": ["{{URL}}"],
+							"path": ["api", "products", ":id"],
+                            "variable": [
+                                { "key": "id", "value": "replace_with_id" }
+                            ]
+						}
+					}
+				}
+			]
+		},
+        {
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Get Cart",
+					"request": {
+						"method": "GET",
+						"header": [
+                            { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+                        ],
+						"url": {
+							"raw": "{{URL}}/api/cart",
+							"host": ["{{URL}}"],
+							"path": ["api", "cart"]
+						}
+					}
+				},
+				{
+					"name": "Add to Cart",
+					"request": {
+						"method": "POST",
+						"header": [
+                            { "key": "Authorization", "value": "Bearer {{TOKEN}}" },
+                            { "key": "Content-Type", "value": "application/json" }
+                        ],
+                        "body": {
+							"mode": "raw",
+							"raw": "{\n    \"productId\": \"replace_with_id\",\n    \"qty\": 1\n}"
+						},
+						"url": {
+							"raw": "{{URL}}/api/cart",
+							"host": ["{{URL}}"],
+							"path": ["api", "cart"]
+						}
+					}
+				}
+			]
+		},
+        {
+			"name": "Orders",
+			"item": [
+				{
+					"name": "Create Order",
+					"request": {
+						"method": "POST",
+						"header": [
+                            { "key": "Authorization", "value": "Bearer {{TOKEN}}" },
+                            { "key": "Content-Type", "value": "application/json" }
+                        ],
+                        "body": {
+							"mode": "raw",
+							"raw": "{\n    \"orderItems\": [\n        {\n            \"product\": \"replace_with_product_id\",\n            \"name\": \"Product Name\",\n            \"image\": \"/image.jpg\",\n            \"price\": 100,\n            \"qty\": 1\n        }\n    ],\n    \"shippingAddress\": {\n        \"address\": \"123 Main St\",\n        \"city\": \"New York\",\n        \"postalCode\": \"10001\",\n        \"country\": \"USA\"\n    },\n    \"paymentMethod\": \"Cash on Delivery\",\n    \"itemsPrice\": 100,\n    \"taxPrice\": 0,\n    \"shippingPrice\": 0,\n    \"totalPrice\": 100\n}"
+						},
+						"url": {
+							"raw": "{{URL}}/api/orders",
+							"host": ["{{URL}}"],
+							"path": ["api", "orders"]
+						}
+					}
+				},
+				{
+					"name": "Get My Orders",
+					"request": {
+						"method": "GET",
+						"header": [
+                            { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+                        ],
+						"url": {
+							"raw": "{{URL}}/api/orders/myorders",
+							"host": ["{{URL}}"],
+							"path": ["api", "orders", "myorders"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "URL",
+			"value": "http://localhost:5000"
+		},
+        {
+            "key": "TOKEN",
+            "value": "your_jwt_token_here"
+        }
+	]
+}
